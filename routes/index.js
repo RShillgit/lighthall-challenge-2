@@ -2,17 +2,32 @@ var express = require('express');
 var router = express.Router();
 
 const User = require('../models/user');
+const Task = require('../models/tasks');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+/* POST home page. */
+router.post('/', function(req, res, next) {
+
+  // Find User by id
+  User.findById(req.body.currentUserId)
+  .populate('tasks')
+
+  // Successfully found User
+  .then(currentUser => {
+    return res.status(200).json({success: true, currentUser: currentUser})
+  })
+
+  // Unsuccessfully found User
+  .catch(err => {
+    return res.status(500).json({err: err, success: false})
+  })
+
 });
 
 router.post('/login', (req, res) => {
 
   // Check if user exists
   User.findOne({
-    first_name: req.body.firstName
+    first_name: req.body.lowerCaseName
   })
 
   // User exists
@@ -34,7 +49,7 @@ router.post('/users', (req, res) => {
 
   // Create new user with form information
   const newUser = new User({
-    first_name: req.body.firstName,
+    first_name: req.body.lowerCaseName,
     tasks: []
   })
   newUser.save()

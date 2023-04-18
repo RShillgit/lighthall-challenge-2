@@ -8,13 +8,16 @@ const Register = () => {
   
     const registerFormSubmit = (e) => {
       e.preventDefault();
+
+      const lowerCaseName = firstName.toLowerCase();
+      console.log(lowerCaseName)
   
       // Post request which creates a new user
       fetch('http://localhost:8000/users', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         mode: 'cors',
-        body: JSON.stringify({firstName})
+        body: JSON.stringify({lowerCaseName})
       })
       .then(res => res.json())
       .then(data => {
@@ -22,7 +25,7 @@ const Register = () => {
         // If creating the new user was successful
         if(data.success) {
             // Navigate to the home page
-            navigate('/');
+            navigate('/login');
         }
       })
       .catch(err => console.log(err))

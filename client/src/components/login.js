@@ -8,13 +8,16 @@ const Login = () => {
   
     const loginFormSubmit = (e) => {
       e.preventDefault();
+
+      // Convert name to all lowercase
+      const lowerCaseName = firstName.toLowerCase();
   
       // POST request to login route ot check if user exists
       fetch('http://localhost:8000/login', {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         mode: 'cors',
-        body: JSON.stringify({firstName})
+        body: JSON.stringify({lowerCaseName})
       })
       .then(res => res.json())
       .then(data => {
@@ -22,7 +25,10 @@ const Login = () => {
 
         // If user exists, route them to the "Home" page
         if(data.success) {
-            navigate('/');
+
+          localStorage.setItem('UserId', data.foundUser._id)
+
+          navigate('/');
         }
       })
       .catch(err => console.log(err))
