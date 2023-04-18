@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require("mongoose");
-require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -13,7 +12,7 @@ var app = express();
 
 // Mongoose Connection
 mongoose.set('strictQuery', false); 
-const mongoDBURL = process.env.db_string;
+const mongoDBURL = 'mongodb+srv://lighthallchallenge2:09itNBDp5gcPxiQj@lighthall-challenge-2.reruiec.mongodb.net/test';
 const mongoDBOptions = { 
   useNewUrlParser: true,
   useUnifiedTopology: true
