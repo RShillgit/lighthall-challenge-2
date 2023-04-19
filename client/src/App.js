@@ -1,4 +1,5 @@
-import {useState, useRef, useEffect} from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './App.css';
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
       
       <h1>Home</h1>
 
-      {(currentUser)
+      {(currentUser && currentUser.tasks.length > 0)
         ?
         <div className='allTasks'>
           {currentUser.tasks.map(task => {
@@ -48,7 +49,11 @@ function App() {
             )
           })}
         </div>
-        :<></>
+        :
+        <div className='noTasks'>
+          <p>The task list is empty.</p>
+          <Link to='/tasks/add'><button>Add Task</button></Link>
+        </div>
       }
    
     </div>
