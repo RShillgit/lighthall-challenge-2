@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const User = require('../models/user');
-const Task = require('../models/tasks');
+const Task = require('../models/task');
 
 /* POST home page. */
 router.post('/', function(req, res, next) {
