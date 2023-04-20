@@ -8,6 +8,14 @@ function App() {
 
   const [addTaskDisplay, setAddTaskDisplay] = useState();
 
+  const [editTaskDisplay, setEditTaskDisplay] = useState();
+  const taskBeingEdited = useRef()
+
+  const [editTitle, setEditTitle] = useState()
+  const [editDescription, setEditDescription] = useState()
+  const [editStatus, setEditStatus] = useState()
+  const [editDueDate, setEditDueDate] = useState()
+
   const title = useRef();
   const description = useRef();
   const status = useRef();
@@ -44,6 +52,10 @@ function App() {
     }
 
   }, [])
+
+  useEffect(() => {
+    setEditTaskDisplay(editTaskForm)
+  }, [editTitle, editDescription, editStatus, editDueDate])
 
   // Sets form display for adding a new task
   const addTaskButtonClick = () => {
@@ -89,6 +101,13 @@ function App() {
     )
   }
 
+  const editTaskButtonCLick = (task) => {
+    taskBeingEdited.current=task
+    setEditTaskDisplay(
+      editTaskForm
+    )
+
+  } 
   // Add Task
   const addTaskFormSubmit = (e) => {
     e.preventDefault();
@@ -155,6 +174,55 @@ function App() {
 
     return formattedDate;
   }
+  const editTaskForm=(
+    <>{(taskBeingEdited.current)
+      ?
+      <div>
+          <form>
+            <label>
+                Title:
+                <input
+                  type="text"
+                  name="title"
+                  value={taskBeingEdited.current.title}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                />
+              </label>
+              <label>
+                Description:
+                <textarea
+                  name="description"
+                  value={taskBeingEdited.current.description}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                ></textarea>
+              </label>
+              <label>
+                Status:
+                <select 
+                onChange={(e) => setEditStatus(e.target.value)}
+                >
+                  <option value="">Select status</option>
+                  <option value="Not started">Not started</option>
+                  <option value="In progress">In progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </label>
+              <label>
+                Due Date:
+                <input
+                  type="date"
+                  name="dueDate"
+                  onChange={(e) => setEditDueDate(e.target.value)}
+                />
+              </label>
+          </form>
+        </div>
+      :
+      <></>
+      }
+      </>
+    
+  )
 
   return (
     <div className="App">
@@ -171,7 +239,7 @@ function App() {
           {currentUser.tasks.map(task => {
             return (
               <div className='individualTask' key={task._id}>
-                <button>Edit</button>
+                <button onClick={() => {editTaskButtonCLick(task)}}>Edit</button>
                 <button>Delete</button>
                 <p>{task.title}</p>
                 <p>{task.description}</p>
@@ -189,6 +257,7 @@ function App() {
       }
 
       {addTaskDisplay}
+      {editTaskDisplay}
    
     </div>
   );
