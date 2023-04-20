@@ -50,8 +50,9 @@ const Login = () => {
             <p className='newUser'>New User: </p>
             <a className='register' href='/register'>Register</a>
           </div>
-            
-            {errorMessage}
+            <div className='errorMessage'>
+             {errorMessage}
+            </div>
         </div>
     )
 
