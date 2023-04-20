@@ -341,6 +341,7 @@ function App() {
     </>
   )
 
+  // Sorting & Filter for tasks list
   const sortAndFilterTasks = () => {
     let filteredTasks = currentUser.tasks.filter(task => task.title.includes(searchKeyword));
     

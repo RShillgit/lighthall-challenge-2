@@ -32,7 +32,6 @@ router.post('/login', (req, res) => {
 
   // User exists
   .then(foundUser => {
-    console.log(foundUser)
     // If user is found return the user
     if(foundUser) {
       return res.status(200).json({success: true, foundUser: foundUser})
