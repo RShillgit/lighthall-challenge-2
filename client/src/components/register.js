@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../App.css"
 
 const Register = () => {
 
@@ -34,9 +35,9 @@ const Register = () => {
     return (
       <div className="App">
         <header className="App-header">
-          <form onSubmit={registerFormSubmit}>
-            <h1>Register a new user</h1>
-            <input type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
+          <h1 className='registerTitle'>Register a new user</h1>
+          <form className='registerForm' onSubmit={registerFormSubmit}>  
+            <input className='registerUser' type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
             <button>Register</button>
           </form>
         </header>
