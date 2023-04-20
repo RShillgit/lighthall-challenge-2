@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../App.css"
 
 const Login = () => {
 
@@ -39,12 +40,17 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <form onSubmit={loginFormSubmit}>
-                <input type="text" name="first_name" onChange={(e) => setFirstName(e.target.value)}/>
-                <button>Log In</button>
-                <a href='/register'>Register</a>
-            </form>
+        <div classsName='loginContainer'>
+          <h1 className='title'>Task Tracker</h1>
+          <form className='loginForm' onSubmit={loginFormSubmit}>
+            <input className='userName' type="text" name="first_name" placeholder="Name" onChange={(e) => setFirstName(e.target.value)}/>
+            <button className='login'>Log In</button>
+          </form>
+          <div className='registerContainer'>
+            <p className='newUser'>New User: </p>
+            <a className='register' href='/register'>Register</a>
+          </div>
+            
             {errorMessage}
         </div>
     )

@@ -1,3 +1,131 @@
+*{
+    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: .1em;
+    align-items: center;
+    display: flex;
+    flex-direction: center;
+    justify-content: center;
+    background-color: #2c3338;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    border-radius: .25em;
+    padding-top: .25em;
+    padding-bottom: .25em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;        text-decoration: none;
+    display: inline-block;
+    font-size: .75em;
+    transition-duration: 0.1s;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #239227; /* Green */
+    color: white;
+}
+
+button:active {
+    background-color: #3e8e41;
+    transform: translateY(2px);
+}
+
+/*login.js*/
+.title {
+    color: white;
+    margin: auto;
+    padding-top: 200px;
+    display: flex;
+    justify-content: center;
+}
+.loginContainer {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 320px;
+    max-width: 20rem;
+    width: 90%;
+}
+.loginForm {
+    margin: auto;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+.userName {
+    background-color: #3b4148;
+    border-radius: .25em;
+    background-image: none;
+    border: 0;
+    color: white;
+    font: inherit;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    padding-left: .5em;
+    transition: background-color 0.3s;
+}
+
+.login {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    border-radius: .25em;
+    padding-top: .25em;
+    padding-bottom: .25em;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: .75em;
+    transition-duration: 0.1s;
+}
+
+.registerContainer {
+    display: flex;
+    font-size: .66em;
+    justify-content: center;
+}
+
+.newUser {
+    color: white;
+    font-weight: bold;
+}
+
+.register {
+    padding-left:.25em;
+    color: #239227;
+    text-decoration: none;
+}
+
+.register:hover {
+    color: #5eaf60;
+}
+
+.register:active {
+    color: #3e8e41;
+    transform: translateY(2px);
+}
+
+.register:visited {
+    text-decoration: none;
+}
+
+/*App.js*/
 .allTasks {
     display: flex;
     flex-direction: column;
