@@ -40,7 +40,7 @@ const Login = () => {
     }
 
     return (
-        <div classsName='loginContainer'>
+        <div className='loginContainer'>
           <h1 className='title'>Task Tracker</h1>
           <form className='loginForm' onSubmit={loginFormSubmit}>
             <input className='userName' type="text" name="first_name" placeholder="Name" onChange={(e) => setFirstName(e.target.value)}/>
