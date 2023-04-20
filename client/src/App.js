@@ -18,6 +18,8 @@ function App() {
   const [editStatus, setEditStatus] = useState();
   const [editDueDate, setEditDueDate] = useState();
 
+  const [deleteConfirmationDisplay, setDeleteConfirmationDisplay] = useState();
+
   // Add task form input values
   const title = useRef();
   const description = useRef();
@@ -216,8 +218,9 @@ function App() {
     setCurrentlyEditingTask(false);
   }
 
-  //delete the task
-  const deleteTask = (taskId) => {
+  // Confirm task delete popup
+  const deleteConfirm = (taskId) => {
+
     if (!taskId) {
       console.error('Invalid task ID:', taskId);
       return;
@@ -231,9 +234,29 @@ function App() {
     .then(data => {
       if (data.success) {
         setCurrentUser(data.updatedUser);
+        setDeleteConfirmationDisplay();
       }
     })
     .catch(err => console.log(err));
+  }
+
+  // Cancels task delete
+  const cancelTaskDelete = () => {
+    setDeleteConfirmationDisplay();
+  }
+
+  // Renders delete task confirmation
+  const deleteTask = (taskId) => {
+
+    setDeleteConfirmationDisplay(
+      <div className='deleteContainer'>
+        <p>Are you sure you want to delete</p>
+        <button onClick={() => cancelTaskDelete()}>
+          Cancel
+        </button>
+        <button onClick={() => deleteConfirm(taskId)}>Confirm</button>
+      </div>
+    )
   }
 
   // Logs user out
@@ -342,31 +365,39 @@ function App() {
   };
 
   return (
-      <div className="App">
-        <h1>Home</h1>
-        <div className="searchAndSort">
-          <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
-          <select value={sortField} onChange={e => setSortField(e.target.value)}>
-            <option value="">Sort by</option>
-            <option value="title">Title</option>
-            <option value="status">Status</option>
-            <option value="due_date">Due date</option>
-          </select>
+    <>
+      {currentUser
+        ?
+        <div className="App">
+          <h1>Home</h1>
+          <div className="searchAndSort">
+            <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
+            <select value={sortField} onChange={e => setSortField(e.target.value)}>
+              <option value="">Sort by</option>
+              <option value="title">Title</option>
+              <option value="status">Status</option>
+              <option value="due_date">Due date</option>
+            </select>
+          </div>
+          {currentUser && currentUser.tasks.length > 0 ? (
+            <div className="allTasks">
+              {sortAndFilterTasks()}
+            </div>
+          ) : (
+            <div className="noTasks">
+              <p>The task list is empty.</p>
+            </div>
+          )}
+          {addTaskDisplay}
+          {editTaskDisplay}
+          {deleteConfirmationDisplay}
+          <button onClick={logUserOut}>Logout</button>
+          <button onClick={addTaskButtonClick}>Add Task</button>
         </div>
-        {currentUser && currentUser.tasks.length > 0 ? (
-          <div className="allTasks">
-            {sortAndFilterTasks()}
-          </div>
-        ) : (
-          <div className="noTasks">
-            <p>The task list is empty.</p>
-          </div>
-        )}
-        {addTaskDisplay}
-        {editTaskDisplay}
-        <button onClick={logUserOut}>Logout</button>
-        <button onClick={addTaskButtonClick}>Add Task</button>
-      </div>
+        :
+        <></>
+      }
+    </>
     );
   };  
 
