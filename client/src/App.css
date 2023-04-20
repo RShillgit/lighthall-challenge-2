@@ -194,6 +194,9 @@ error.js
     padding: 1rem;
     margin: 1rem;
 }
+.App {
+    color: white;
+}
 
 /* Edit Task */
 .editTaskContainer {
