@@ -62,12 +62,14 @@ router.get('/', function(req, res, next) {
 
 // DELETE a specific task
 router.delete('/:taskId', function(req, res, next) {
+
   // Find and remove the task
   Task.findByIdAndRemove(req.params.taskId)
   // Successfully removed the task
   .then(() => {
+
     // Find the current user and repopulate
-    User.findById(req.query.currentUserId)
+    User.findById(req.query.userId)
     .populate('tasks')
     // Successfully found user
     .then(updatedUser => {

@@ -216,13 +216,14 @@ function App() {
   const cancelEditTask = () => {
     setCurrentlyEditingTask(false);
   }
+  
   //delete the task
   const deleteTask = (taskId) => {
     if (!taskId) {
       console.error('Invalid task ID:', taskId);
       return;
     }
-    fetch(`http://localhost:8000/tasks/${taskId}`, {
+    fetch(`http://localhost:8000/tasks/${taskId}?userId=${currentUser._id}`, {
       method: 'DELETE',
       headers: { "Content-Type": "application/json" },
       mode: 'cors'
@@ -231,7 +232,6 @@ function App() {
     .then(data => {
       if (data.success) {
         setCurrentUser(data.updatedUser);
-        window.location.reload();
       }
     })
     .catch(err => console.log(err));
