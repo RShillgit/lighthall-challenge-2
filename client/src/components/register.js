@@ -36,7 +36,7 @@ const Register = () => {
         <header className="App-header">
           <form onSubmit={registerFormSubmit}>
             <h1>Register a new user</h1>
-            <input type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)}/>
+            <input type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
             <button>Register</button>
           </form>
         </header>

@@ -46,7 +46,6 @@ function App() {
       })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
 
         // If the user has been found
         if (data.success) {
@@ -216,7 +215,7 @@ function App() {
   const cancelEditTask = () => {
     setCurrentlyEditingTask(false);
   }
-  
+
   //delete the task
   const deleteTask = (taskId) => {
     if (!taskId) {
