@@ -26,6 +26,10 @@ function App() {
 
   const navigate = useNavigate();
 
+  //Add searchkeyword and sortfield
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [sortField, setSortField] = useState('');
+
   // On mount check for user in local storage
   useEffect(() => {
 
@@ -212,6 +216,26 @@ function App() {
   const cancelEditTask = () => {
     setCurrentlyEditingTask(false);
   }
+  //delete the task
+  const deleteTask = (taskId) => {
+    if (!taskId) {
+      console.error('Invalid task ID:', taskId);
+      return;
+    }
+    fetch(`http://localhost:8000/tasks/${taskId}`, {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" },
+      mode: 'cors'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        setCurrentUser(data.updatedUser);
+        window.location.reload();
+      }
+    })
+    .catch(err => console.log(err));
+  }
 
   // Logs user out
   const logUserOut = () => {
@@ -295,44 +319,57 @@ function App() {
     </>
   )
 
+  const sortAndFilterTasks = () => {
+    let filteredTasks = currentUser.tasks.filter(task => task.title.includes(searchKeyword));
+    
+    if (sortField === 'title') {
+      filteredTasks = filteredTasks.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortField === 'status') {
+      filteredTasks = filteredTasks.sort((a, b) => a.status.localeCompare(b.status));
+    } else if (sortField === 'due_date') {
+      filteredTasks = filteredTasks.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
+    }
+    
+    return filteredTasks.map(task => (
+      <div className="individualTasks" key={task._id}>
+        <h3>{task.title}</h3>
+        <p>{task.description}</p>
+        <p>Status: {task.status}</p>
+        <p>Due Date: {formatDate(task.due_date)}</p>
+        <button onClick={() => deleteTask(task._id)}>Delete</button>
+        <button onClick={() => editTaskButtonClick(task)}>Edit</button>
+      </div>
+    ));
+  };
+
   return (
-    <div className="App">
-      
-      <h1>Home</h1>
-
-      <button onClick={logUserOut}>Logout</button>
-
-      <button onClick={addTaskButtonClick}>Add Task</button>
-
-      {(currentUser && currentUser.tasks.length > 0)
-        ?
-        <div className='allTasks'>
-          {currentUser.tasks.map(task => {
-            return (
-              <div className='individualTask' key={task._id}>
-                <button onClick={() => {editTaskButtonClick(task)}}>Edit</button>
-                <button>Delete</button>
-                <p>{task.title}</p>
-                <p>{task.description}</p>
-                <p>{task.status}</p>
-                <p>{formatDate(task.due_date)}</p>
-              </div>
-            )
-          })}
+      <div className="App">
+        <h1>Home</h1>
+        <div className="searchAndSort">
+          <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
+          <select value={sortField} onChange={e => setSortField(e.target.value)}>
+            <option value="">Sort by</option>
+            <option value="title">Title</option>
+            <option value="status">Status</option>
+            <option value="due_date">Due date</option>
+          </select>
         </div>
-        :
-        <div className='noTasks'>
-          <p>The task list is empty.</p>
-          <Link to='/tasks/add'><button>Add Task</button></Link>
-        </div>
-      }
-
-      {addTaskDisplay}
-
-      {editTaskDisplay}
-   
-    </div>
-  );
-}
+        {currentUser && currentUser.tasks.length > 0 ? (
+          <div className="allTasks">
+            {sortAndFilterTasks()}
+          </div>
+        ) : (
+          <div className="noTasks">
+            <p>The task list is empty.</p>
+          </div>
+        )}
+        {addTaskDisplay}
+        {editTaskDisplay}
+        <button onClick={logUserOut}>Logout</button>
+        <button onClick={addTaskButtonClick}>Add Task</button>
+      </div>
+    );
+  };  
 
 export default App;
+
