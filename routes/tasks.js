@@ -60,6 +60,30 @@ router.get('/', function(req, res, next) {
     });
 });
 
+// DELETE a specific task
+router.delete('/:taskId', function(req, res, next) {
+  // Find and remove the task
+  Task.findByIdAndRemove(req.params.taskId)
+  // Successfully removed the task
+  .then(() => {
+    // Find the current user and repopulate
+    User.findById(req.query.currentUserId)
+    .populate('tasks')
+    // Successfully found user
+    .then(updatedUser => {
+      return res.status(200).json({updatedUser: updatedUser, success: true});
+    })
+    // Unsuccessfully found user
+    .catch(err => {
+      return res.status(500).json({err: err, success: false});
+    })
+  })
+  // Unsuccessfully removed the task
+  .catch(err => {
+    return res.status(500).json({err: err, success: false});
+  })
+});
+
 // Updates a specific task
 router.put('/:taskId', (req, res, next) => {
 
