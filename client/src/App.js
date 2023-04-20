@@ -6,20 +6,24 @@ function App() {
 
   const [currentUser, setCurrentUser] = useState();
 
-  const [addTaskDisplay, setAddTaskDisplay] = useState();
+  const [addTaskDisplay, setAddTaskDisplay] = useState(); // Display for the add task form
 
-  const [editTaskDisplay, setEditTaskDisplay] = useState();
-  const taskBeingEdited = useRef()
+  const [editTaskDisplay, setEditTaskDisplay] = useState(); // Display for the edit task form
+  const [currentlyEditingTask, setCurrentlyEditingTask] = useState(false); // Used to toggle between editing a task and normal display
+  const taskBeingEdited = useRef(); // Current task being edited
 
-  const [editTitle, setEditTitle] = useState()
-  const [editDescription, setEditDescription] = useState()
-  const [editStatus, setEditStatus] = useState()
-  const [editDueDate, setEditDueDate] = useState()
+  // Edit task form input values
+  const [editTitle, setEditTitle] = useState();
+  const [editDescription, setEditDescription] = useState();
+  const [editStatus, setEditStatus] = useState();
+  const [editDueDate, setEditDueDate] = useState();
 
+  // Add task form input values
   const title = useRef();
   const description = useRef();
   const status = useRef();
   const dueDate = useRef();
+
   const navigate = useNavigate();
 
   // On mount check for user in local storage
@@ -53,9 +57,19 @@ function App() {
 
   }, [])
 
+  // Anytime the currentlyEditingTask variable or the inputs in the edit task form  change
   useEffect(() => {
-    setEditTaskDisplay(editTaskForm)
-  }, [editTitle, editDescription, editStatus, editDueDate])
+
+    // If we are currently editing a task set the display edit task form
+    if(currentlyEditingTask) {
+      setEditTaskDisplay(editTaskForm)
+    }
+    // Else remove edit task form
+    else {
+      setEditTaskDisplay();
+    }
+    
+  }, [currentlyEditingTask, editTitle, editDescription, editStatus, editDueDate])
 
   // Sets form display for adding a new task
   const addTaskButtonClick = () => {
@@ -101,13 +115,6 @@ function App() {
     )
   }
 
-  const editTaskButtonCLick = (task) => {
-    taskBeingEdited.current=task
-    setEditTaskDisplay(
-      editTaskForm
-    )
-
-  } 
   // Add Task
   const addTaskFormSubmit = (e) => {
     e.preventDefault();
@@ -139,6 +146,73 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  // Sets neccessary state variables to display the edit task form
+  const editTaskButtonClick = (task) => {
+
+    taskBeingEdited.current = task;
+
+    // Format the due date string so it can be used as an input value
+    const taskDueDate = new Date(task.due_date);
+    let day = taskDueDate.getDate() + 1;
+    let month = taskDueDate.getMonth() + 1;
+    let year = taskDueDate.getFullYear();
+
+    // Add a zero in front of 1 digit months and days
+    if (day < 10) {
+      day = '0' + day;
+    }
+    if (month < 10) {
+      month = `0${month}`;
+    }
+
+    const inputCompatibleDate = `${year}-${month}-${day}`;
+
+    // Set editing variables
+    setEditTitle(task.title);
+    setEditDescription(task.description);
+    setEditStatus(task.status)
+    setEditDueDate(inputCompatibleDate);
+
+    // Change currently editing task status to true
+    setCurrentlyEditingTask(true);
+  } 
+
+  // Handles edit task form submit
+  const editTaskFormSubmit = (e) => {
+    e.preventDefault();
+
+    // Send edited information to the backend
+    fetch(`http://localhost:8000/tasks/${taskBeingEdited.current._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify({
+        userId: currentUser._id,
+        editTitle,
+        editDescription,
+        editStatus,
+        editDueDate
+      }),
+    })
+    .then((res) => res.json())
+    .then(data => {
+      // If it was successful
+      if(data.success) {
+        // Set current user with the updated information
+        setCurrentUser(data.updatedUser);
+
+        // Remove edit task form
+        setCurrentlyEditingTask(false);
+      }
+    })
+    .catch(err => console.log(err))
+  }
+
+  // Cancels the edit task form
+  const cancelEditTask = () => {
+    setCurrentlyEditingTask(false);
+  }
+
   // Logs user out
   const logUserOut = () => {
     // Remove user from local storage
@@ -154,7 +228,7 @@ function App() {
     const taskDate = new Date(timestamp);
 
     // Day
-    let day = taskDate.getDate();
+    let day = taskDate.getDate() + 1;
 
     // Month
     let month = taskDate.getMonth() + 1;
@@ -174,54 +248,51 @@ function App() {
 
     return formattedDate;
   }
-  const editTaskForm=(
-    <>{(taskBeingEdited.current)
+
+  // Form for editing a specific task
+  const editTaskForm = (
+    <>
+      {(taskBeingEdited.current)
       ?
-      <div>
-          <form>
-            <label>
-                Title:
-                <input
-                  type="text"
-                  name="title"
-                  value={taskBeingEdited.current.title}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                />
-              </label>
-              <label>
-                Description:
-                <textarea
-                  name="description"
-                  value={taskBeingEdited.current.description}
-                  onChange={(e) => setEditDescription(e.target.value)}
-                ></textarea>
-              </label>
-              <label>
-                Status:
-                <select 
-                onChange={(e) => setEditStatus(e.target.value)}
-                >
-                  <option value="">Select status</option>
-                  <option value="Not started">Not started</option>
-                  <option value="In progress">In progress</option>
-                  <option value="Completed">Completed</option>
-                </select>
-              </label>
-              <label>
-                Due Date:
-                <input
-                  type="date"
-                  name="dueDate"
-                  onChange={(e) => setEditDueDate(e.target.value)}
-                />
-              </label>
-          </form>
+      <div className='editTaskContainer'>
+        <form id='editTaskForm' onSubmit={editTaskFormSubmit}>
+          <label>
+            Title:
+            <input type="text" name="title" value={editTitle}
+              onChange={(e) => setEditTitle(e.target.value)}
+            />
+          </label>
+          <label>
+            Description:
+            <textarea name="description" value={editDescription}
+              onChange={(e) => setEditDescription(e.target.value)}
+            ></textarea>
+          </label>
+          <label>
+            Status:
+            <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+              <option value="">Select status</option>
+              <option value="Not started">Not started</option>
+              <option value="In progress">In progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </label>
+          <label>
+            Due Date:
+            <input type="date" name="dueDate" value={editDueDate}
+              onChange={(e) => setEditDueDate(e.target.value)}
+            />
+          </label>
+        </form>
+        <div className='editTaskForm-buttons'>
+          <button onClick={cancelEditTask}>Cancel</button>
+          <button form='editTaskForm'>Submit</button>
         </div>
+      </div>
       :
       <></>
       }
-      </>
-    
+    </>
   )
 
   return (
@@ -239,7 +310,7 @@ function App() {
           {currentUser.tasks.map(task => {
             return (
               <div className='individualTask' key={task._id}>
-                <button onClick={() => {editTaskButtonCLick(task)}}>Edit</button>
+                <button onClick={() => {editTaskButtonClick(task)}}>Edit</button>
                 <button>Delete</button>
                 <p>{task.title}</p>
                 <p>{task.description}</p>
@@ -257,6 +328,7 @@ function App() {
       }
 
       {addTaskDisplay}
+
       {editTaskDisplay}
    
     </div>

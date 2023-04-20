@@ -140,3 +140,22 @@ button:active {
     padding: 1rem;
     margin: 1rem;
 }
+
+/* Edit Task */
+.editTaskContainer {
+    border: 1px solid purple;
+    margin: 1rem;
+}
+.editTaskContainer form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+.editTaskContainer .editTaskForm-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    padding-bottom: 1rem;
+}
