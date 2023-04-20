@@ -40,10 +40,10 @@ const Login = () => {
     }
 
     return (
-        <div classsName='loginContainer'>
+        <div className='loginContainer'>
           <h1 className='title'>Task Tracker</h1>
           <form className='loginForm' onSubmit={loginFormSubmit}>
-            <input className='userName' type="text" name="first_name" placeholder="Name" onChange={(e) => setFirstName(e.target.value)}/>
+            <input className='userName' type="text" name="first_name" placeholder="Name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
             <button className='login'>Log In</button>
           </form>
           <div className='registerContainer'>
