@@ -1,40 +1,50 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/task');
+const User = require('../models/user');
 
 // POST create a new task for a user.
 router.post('/', function(req, res, next) {
-  // Find user by id
-  User.findById(req.body.currentUserId)
-    .then(currentUser => {
-      // Create new task for user
-      const newTask = new Task({
-        title: req.body.title,
-        description: req.body.description,
-        status: req.body.status,
-        due_date: req.body.due_date,
-        user: currentUser._id
-      });
-      // Save task to database
-      newTask.save()
-        .then(savedTask => {
-          // Add task to user's tasks array
-          currentUser.tasks.push(savedTask._id);
-          currentUser.save()
-            .then(() => {
-              return res.status(200).json({success: true, message: "Task created successfully."});
-            })
-            .catch(err => {
-              return res.status(500).json({err: err, success: false});
-            });
-        })
-        .catch(err => {
-          return res.status(500).json({err: err, success: false});
-        });
+
+  // Create the new task
+  const newTask = new Task({
+    title: req.body.newTaskRequest.title,
+    description: req.body.newTaskRequest.description,
+    status: req.body.newTaskRequest.status,
+    due_date: req.body.newTaskRequest.dueDate,
+  });
+  newTask.save()
+
+  // Successfully created the new task
+  .then(() => {
+
+    // Update user's tasks array
+    const updatedTasksArray = req.body.newTaskRequest.currentUser.tasks;
+    updatedTasksArray.unshift(newTask);
+    
+    User.findByIdAndUpdate(req.body.newTaskRequest.currentUser._id,
+      {
+        tasks: updatedTasksArray
+      },
+      {new: true}
+    )
+    .populate('tasks')
+
+    // Successfully updated the user
+    .then(updatedUser => {
+      return res.status(200).json({updatedUser: updatedUser, success: true});
     })
+    // Unsuccessfully updated the user
     .catch(err => {
       return res.status(500).json({err: err, success: false});
-    });
+    })
+
+  })
+  // Unuccessfully created the new task
+  .catch(err => {
+    return res.status(500).json({err: err, success: false});
+  })
+
 });
 
 // GET all tasks for a user.

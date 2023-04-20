@@ -28,7 +28,7 @@ const Login = () => {
 
           localStorage.setItem('UserId', data.foundUser._id)
 
-          navigate('/tasks');
+          navigate('/');
         }
       })
       .catch(err => console.log(err))

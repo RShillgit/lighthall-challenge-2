@@ -1,0 +1,14 @@
+.allTasks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid red;
+}
+.allTasks .individualTask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid blue;
+    padding: 1rem;
+    margin: 1rem;
+}
