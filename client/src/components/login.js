@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
 
     const [firstName, setFirstName] = useState();
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
   
     const loginFormSubmit = (e) => {
@@ -21,7 +22,6 @@ const Login = () => {
       })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
 
         // If user exists, route them to the "Home" page
         if(data.success) {
@@ -29,6 +29,10 @@ const Login = () => {
           localStorage.setItem('UserId', data.foundUser._id)
 
           navigate('/');
+        }
+        // Else render error message
+        else {
+          setErrorMessage(data.error);
         }
       })
       .catch(err => console.log(err))
@@ -41,6 +45,7 @@ const Login = () => {
                 <button>Log In</button>
                 <a href='/register'>Register</a>
             </form>
+            {errorMessage}
         </div>
     )
 

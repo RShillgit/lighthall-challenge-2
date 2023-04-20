@@ -12,9 +12,9 @@ function App() {
   const description = useRef();
   const status = useRef();
   const dueDate = useRef();
-
   const navigate = useNavigate();
 
+  // On mount check for user in local storage
   useEffect(() => {
 
     const currentUserId = localStorage.getItem('UserId');
@@ -38,6 +38,9 @@ function App() {
         }
       })
       .catch(err => console.log(err))
+    }
+    else {
+      navigate('/login');
     }
 
   }, [])
@@ -117,6 +120,15 @@ function App() {
       .catch((err) => console.log(err));
   };
 
+  // Logs user out
+  const logUserOut = () => {
+    // Remove user from local storage
+    localStorage.removeItem('UserId');
+
+    // Navigate to login 
+    navigate('/login');
+  }
+
   // Formats timestamp into MM/DD/YYYY
   const formatDate = (timestamp) => {
 
@@ -148,6 +160,8 @@ function App() {
     <div className="App">
       
       <h1>Home</h1>
+
+      <button onClick={logUserOut}>Logout</button>
 
       <button onClick={addTaskButtonClick}>Add Task</button>
 

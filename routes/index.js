@@ -32,8 +32,14 @@ router.post('/login', (req, res) => {
 
   // User exists
   .then(foundUser => {
+    console.log(foundUser)
+    // If user is found return the user
     if(foundUser) {
       return res.status(200).json({success: true, foundUser: foundUser})
+    }
+    // Else return error message
+    else {
+      return res.status(200).json({success: false, error: 'User not found, please register'})
     }
   })
 
