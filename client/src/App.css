@@ -118,6 +118,14 @@ button:active {
     text-decoration: none;
 }
 
+.errorMessage {
+    color: white;
+    margin: auto;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
 /*
 register.js
 */
@@ -149,6 +157,26 @@ register.js
     padding: 0;
     padding-left: .5em;
     transition: background-color 0.3s;
+}
+
+/*
+error.js
+*/
+.errorTitle {
+    color: white;
+    margin: auto;
+    padding-top: 200px;
+    display: flex;
+    justify-content: center;
+}
+
+.returnHome {
+    margin: auto;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
 }
 
 /*App.js*/

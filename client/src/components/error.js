@@ -6,8 +6,8 @@ const Error = () => {
 
     return (
         <div>
-            <h1>Oops 404 {location.pathname} Not Found</h1>
-            <a href="/">
+            <h1 className='errorTitle'>Oops 404 "{location.pathname}" Not Found</h1>
+            <a className='returnHome' href="/">
                 <button>Return Home</button>
             </a>
         </div>
