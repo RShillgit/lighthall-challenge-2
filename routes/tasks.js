@@ -60,5 +60,38 @@ router.get('/', function(req, res, next) {
     });
 });
 
+// Updates a specific task
+router.put('/:taskId', (req, res, next) => {
+
+  // Find and update the task
+  Task.findByIdAndUpdate(req.params.taskId,
+    {
+      title: req.body.editTitle,
+      description: req.body.editDescription,
+      status: req.body.editStatus,
+      due_date: req.body.editDueDate
+    }
+  )
+  // Successfully updated the task
+  .then(() => {
+
+    // Find the current user and repopulate
+    User.findById(req.body.userId)
+    .populate('tasks')
+    // Successfully found user
+    .then(updatedUser => {
+      return res.status(200).json({updatedUser: updatedUser, success: true});
+    })
+    // Unsuccessfully found user
+    .catch(err => {
+      return res.status(500).json({err: err, success: false});
+    })
+  })
+  // Unuccessfully updated the task
+  .catch(err => {
+    return res.status(500).json({err: err, success: false});
+  })
+})
+
 module.exports = router;
 

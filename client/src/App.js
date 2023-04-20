@@ -153,7 +153,7 @@ function App() {
 
     // Format the due date string so it can be used as an input value
     const taskDueDate = new Date(task.due_date);
-    let day = taskDueDate.getDate();
+    let day = taskDueDate.getDate() + 1;
     let month = taskDueDate.getMonth() + 1;
     let year = taskDueDate.getFullYear();
 
@@ -164,7 +164,7 @@ function App() {
     if (month < 10) {
       month = `0${month}`;
     }
-    
+
     const inputCompatibleDate = `${year}-${month}-${day}`;
 
     // Set editing variables
@@ -181,9 +181,31 @@ function App() {
   const editTaskFormSubmit = (e) => {
     e.preventDefault();
 
-    console.log(editTitle, editDescription, editStatus, editDueDate);
     // Send edited information to the backend
+    fetch(`http://localhost:8000/tasks/${taskBeingEdited.current._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      mode: "cors",
+      body: JSON.stringify({
+        userId: currentUser._id,
+        editTitle,
+        editDescription,
+        editStatus,
+        editDueDate
+      }),
+    })
+    .then((res) => res.json())
+    .then(data => {
+      // If it was successful
+      if(data.success) {
+        // Set current user with the updated information
+        setCurrentUser(data.updatedUser);
 
+        // Remove edit task form
+        setCurrentlyEditingTask(false);
+      }
+    })
+    .catch(err => console.log(err))
   }
 
   // Cancels the edit task form
@@ -206,7 +228,7 @@ function App() {
     const taskDate = new Date(timestamp);
 
     // Day
-    let day = taskDate.getDate();
+    let day = taskDate.getDate() + 1;
 
     // Month
     let month = taskDate.getMonth() + 1;
