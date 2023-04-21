@@ -17,7 +17,7 @@ const Login = (props) => {
       if(state && state.registeredMessage) {
         setRegisteredSuccessfullyMessage(
           <div className="registeredSuccessfullyMessage">
-            <p>{state.registeredMessage}</p>
+            {state.registeredMessage}
           </div>
         )
       }

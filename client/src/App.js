@@ -150,7 +150,6 @@ function App(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         if (data.success) {
           // set updated current user state
           setCurrentUser(data.updatedUser);

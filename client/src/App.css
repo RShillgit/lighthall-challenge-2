@@ -104,6 +104,7 @@ button:active {
 .newUser {
     color: white;
     font-weight: bold;
+    font-size: 1em;
 }
 
 .register {
@@ -188,6 +189,7 @@ register.js
 .haveAccount {
     color: white;
     font-weight: bold;
+    font-size: 1em;
 }
 
 .loginLink {
@@ -510,6 +512,16 @@ error.js
 .addConfirm {
     padding-top: 8px;
     text-align: center;
+}
+.addConfirm .addTaskCancel {
+    background-color: rgb(255, 100, 100);
+}
+.addConfirm .addTaskCancel:hover {
+    background-color: red;
+}
+.addConfirm .addTaskCancel:active {
+    background-color: rgb(200, 0, 0);
+    transform: translateY(2px);
 }
 
   .taskOptions {
