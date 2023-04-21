@@ -79,44 +79,47 @@ function App(props) {
   // Sets form display for adding a new task
   const addTaskButtonClick = () => {
     setAddTaskDisplay(
-      <div>
-        <h2>Add Task</h2>
-        <form onSubmit={addTaskFormSubmit}>
-          <label>
-            Title:
-            <input
-              type="text"
-              name="title"
-              onChange={(e) => title.current = (e.target.value)}
-            />
-          </label>
-          <label>
-            Description:
-            <textarea
-              name="description"
-              onChange={(e) => description.current = (e.target.value)}
-            ></textarea>
-          </label>
-          <label>
-            Status:
-            <select onChange={(e) => status.current = (e.target.value)}>
-              <option value="">Select status</option>
-              <option value="Not started">Not started</option>
-              <option value="In progress">In progress</option>
-              <option value="Completed">Completed</option>
-            </select>
-          </label>
-          <label>
-            Due Date:
-            <input
-              type="date"
-              name="dueDate"
-              onChange={(e) => dueDate.current = (e.target.value)}
-            />
-          </label>
-          <button type="submit">Add Task</button>
-        </form>
-      </div>
+      <div className='addTaskContainer'>
+        <div className='newTaskWindow'>
+          <h2>Add Task</h2>
+            <form onSubmit={addTaskFormSubmit}>
+              <label>
+                Title:
+                <input
+                  type="text"
+                  name="title"
+                  onChange={(e) => title.current = (e.target.value)}
+                />
+              </label>
+              <label>
+                Description:
+                <textarea
+                  name="description"
+                  onChange={(e) => description.current = (e.target.value)}
+                ></textarea>
+              </label>
+              <label>
+                Status:
+                <select onChange={(e) => status.current = (e.target.value)}>
+                  <option value="">Select status</option>
+                  <option value="Not started">Not started</option>
+                  <option value="In progress">In progress</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </label>
+              <label>
+                Due Date:
+                <input
+                  type="date"
+                  name="dueDate"
+                  onChange={(e) => dueDate.current = (e.target.value)}
+                />
+              </label>
+              <button type="submit">Add Task</button>
+            </form>
+        </div>
+        
+        </div> 
     )
   }
 
@@ -333,13 +336,10 @@ function App(props) {
                 onChange={(e) => setEditDueDate(e.target.value)}
               />
             </label>
-          </form>
-          <div className='editTaskForm-buttons'>        
             <button form='editTaskForm'>Submit</button>
-            <button onClick={cancelEditTask}>Cancel</button>  
-          </div>
+            <button onClick={cancelEditTask}>Cancel</button> 
+            </form>
         </div>
-        
       </div>
       :
       <></>
@@ -376,35 +376,34 @@ function App(props) {
       {currentUser
         ?
         <div className="App">
-        <div className='logoutButtonContainer'>
-          <button className='logoutButton' onClick={logUserOut}>Logout</button>
-        </div>
-        <div className='displayTasksContainer'>
-          <h1 className='taskTitle'>Your Tasks</h1>
-          <div className="searchAndSort">
-            <select value={sortField} onChange={e => setSortField(e.target.value)}>
-              <option value="">Sort by</option>
-              <option value="title">Title</option>
-              <option value="status">Status</option>
-              <option value="due_date">Due date</option>
-            </select>
-            <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
-            <button onClick={addTaskButtonClick}>Add Task</button>
+          <div className='logoutButtonContainer'>
+            <button className='logoutButton' onClick={logUserOut}>Logout</button>
+          </div>
+          <div className='displayTasksContainer'>
+            <h1 className='taskTitle'>Your Tasks</h1>
+            <div className="searchAndSort">
+              <select value={sortField} onChange={e => setSortField(e.target.value)}>
+                <option value="">Sort by</option>
+                <option value="title">Title</option>
+                <option value="status">Status</option>
+                <option value="due_date">Due date</option>
+              </select>
+              <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
+              <button onClick={addTaskButtonClick}>Add Task</button>
             </div>
             {currentUser && currentUser.tasks.length > 0 ? (
               <div className="allTasks">
                 {sortAndFilterTasks()}
               </div>
-            ) : (
-              <div className="noTasks">
-                <p>The task list is empty.</p>
-              </div>
-            )}
+              ) : (
+                <div className="noTasks">
+                  <p>The task list is empty.</p>
+                </div>
+              )}
             {addTaskDisplay}
             {editTaskDisplay}
             {deleteConfirmationDisplay}
           </div>
-        
         </div>
         :
         <></>
