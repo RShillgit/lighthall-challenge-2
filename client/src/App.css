@@ -273,8 +273,15 @@ error.js
     display: flex;
     flex-direction: column;
     border-radius: 10px;
+}
 
 .individualTasks {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 4px;
+    border-bottom: 1px solid black;
+}
+.individualTask {
     display: flex;
     justify-content: space-between;
     padding-bottom: 4px;
@@ -290,7 +297,6 @@ error.js
     padding: 2.5px;
 }
 
-}
 .allTasks .individualTask {
     display: flex;
     flex-direction: column;

@@ -88,6 +88,7 @@ function App(props) {
                 <input className='newTitleField'
                   type="text"
                   name="title"
+                  required={true}
                   onChange={(e) => title.current = (e.target.value)}
                 />
               </label>
@@ -100,7 +101,7 @@ function App(props) {
               </label>
               <p>Status:</p>
               <label>
-                <select className='newProgress' onChange={(e) => status.current = (e.target.value)}>
+                <select className='newProgress' onChange={(e) => status.current = (e.target.value)} required={true}>
                   <option value="">Select status</option>
                   <option value="Not started">Not started</option>
                   <option value="In progress">In progress</option>
@@ -112,6 +113,7 @@ function App(props) {
                 <input
                   type="date"
                   name="dueDate"
+                  required={true}
                   onChange={(e) => dueDate.current = (e.target.value)}
                 />
               </label>
@@ -323,7 +325,7 @@ function App(props) {
             </p>
             <label>
               <input className='addTitleField' type="text" name="title" value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
+                onChange={(e) => setEditTitle(e.target.value)} required={true}
               />
             </label>
             <p>
@@ -338,7 +340,7 @@ function App(props) {
             Status:
             </p>
             <label>
-              <select className='currentProgress' value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+              <select className='currentProgress' value={editStatus} onChange={(e) => setEditStatus(e.target.value)} required={true}>
                 <option value="">Select status</option>
                 <option value="Not started">Not started</option>
                 <option value="In progress">In progress</option>
@@ -349,7 +351,7 @@ function App(props) {
             Due Date:
             </p>
             <label>
-              <input type="date" name="dueDate" value={editDueDate}
+              <input type="date" name="dueDate" value={editDueDate} required={true}
                 onChange={(e) => setEditDueDate(e.target.value)}
               />
             </label>
