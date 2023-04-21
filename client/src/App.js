@@ -81,41 +81,43 @@ function App(props) {
     setAddTaskDisplay(
       <div className='addTaskContainer'>
         <div className='newTaskWindow'>
-          <h2>Add Task</h2>
+          <h3>Add Task</h3>
             <form onSubmit={addTaskFormSubmit}>
+              <p>Title:</p>
               <label>
-                Title:
-                <input
+                <input className='newTitleField'
                   type="text"
                   name="title"
                   onChange={(e) => title.current = (e.target.value)}
                 />
               </label>
+              <p>Description:</p>
               <label>
-                Description:
-                <textarea
+                <textarea className='newDescriptionField'
                   name="description"
                   onChange={(e) => description.current = (e.target.value)}
                 ></textarea>
               </label>
+              <p>Status:</p>
               <label>
-                Status:
-                <select onChange={(e) => status.current = (e.target.value)}>
+                <select className='newProgress' onChange={(e) => status.current = (e.target.value)}>
                   <option value="">Select status</option>
                   <option value="Not started">Not started</option>
                   <option value="In progress">In progress</option>
                   <option value="Completed">Completed</option>
                 </select>
               </label>
+              <p>Due Date:</p>
               <label>
-                Due Date:
                 <input
                   type="date"
                   name="dueDate"
                   onChange={(e) => dueDate.current = (e.target.value)}
                 />
               </label>
-              <button type="submit">Add Task</button>
+              <div className='addConfirm'>
+                <button type="submit">Add Task</button>
+              </div>
             </form>
         </div>
         
@@ -404,7 +406,6 @@ function App(props) {
                 <option value="due_date">Due date</option>
               </select>
               <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
-              <button onClick={addTaskButtonClick}>Add Task</button>
             </div>
             {currentUser && currentUser.tasks.length > 0 ? (
               <div className="allTasks">
@@ -418,6 +419,9 @@ function App(props) {
             {addTaskDisplay}
             {editTaskDisplay}
             {deleteConfirmationDisplay}
+            <div className='addNewTask'>
+              <button onClick={addTaskButtonClick}>+ Add New Task</button>
+            </div>
           </div>
         </div>
         :
