@@ -116,7 +116,8 @@ function App(props) {
                 />
               </label>
               <div className='addConfirm'>
-                <button type="submit">Add Task</button>
+                <button type="submit">Add Task</button>   
+                <button className='addTaskCancel' onClick={cancelAddTask}>Cancel</button>              
               </div>
             </form>
         </div>
@@ -129,10 +130,12 @@ function App(props) {
   const addTaskFormSubmit = (e) => {
     e.preventDefault();
 
+    let newDescription = description.current || "none";
+
     const newTaskRequest = {
       currentUser: currentUser,
       title: title.current,
-      description: description.current,
+      description: newDescription,
       status: status.current,
       dueDate: dueDate.current
     }
@@ -155,6 +158,10 @@ function App(props) {
       })
       .catch((err) => console.log(err));
   };
+
+  const cancelAddTask = () => {
+    setAddTaskDisplay();
+  }
 
   // Sets neccessary state variables to display the edit task form
   const editTaskButtonClick = (task) => {
@@ -366,7 +373,13 @@ function App(props) {
     if (sortField === 'title') {
       filteredTasks = filteredTasks.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortField === 'status') {
-      filteredTasks = filteredTasks.sort((a, b) => a.status.localeCompare(b.status));
+      // define an object to map each status to a numerical value
+    const statusValues = {
+      'Not started': 1,
+      'In progress': 2,
+      'Completed': 3
+    };
+    filteredTasks = filteredTasks.sort((a, b) => statusValues[a.status] - statusValues[b.status]); // sort the tasks based on the numerical value of the status
     } else if (sortField === 'due_date') {
       filteredTasks = filteredTasks.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
     }
