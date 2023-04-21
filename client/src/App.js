@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './App.css';
 
-function App() {
+function App(props) {
 
   const [currentUser, setCurrentUser] = useState();
 
@@ -34,13 +34,13 @@ function App() {
 
   // On mount check for user in local storage
   useEffect(() => {
-
+    
     const currentUserId = localStorage.getItem('UserId');
     
     if(currentUserId) {
 
       // Get request to find all tasks for this user
-      fetch('http://localhost:8000/', {
+      fetch(props.serverURL, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         mode: 'cors',
@@ -132,7 +132,7 @@ function App() {
       dueDate: dueDate.current
     }
 
-    fetch(`http://localhost:8000/tasks`, {
+    fetch(`${props.serverURL}/tasks`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       mode: "cors",
@@ -187,7 +187,7 @@ function App() {
     e.preventDefault();
 
     // Send edited information to the backend
-    fetch(`http://localhost:8000/tasks/${taskBeingEdited.current._id}`, {
+    fetch(`${props.serverURL}/tasks/${taskBeingEdited.current._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       mode: "cors",
@@ -225,7 +225,7 @@ function App() {
       console.error('Invalid task ID:', taskId);
       return;
     }
-    fetch(`http://localhost:8000/tasks/${taskId}?userId=${currentUser._id}`, {
+    fetch(`${props.serverURL}/tasks/${taskId}?userId=${currentUser._id}`, {
       method: 'DELETE',
       headers: { "Content-Type": "application/json" },
       mode: 'cors'
@@ -347,6 +347,7 @@ function App() {
     </>
   )
 
+  // Sorting & Filter for tasks list
   const sortAndFilterTasks = () => {
     let filteredTasks = currentUser.tasks.filter(task => task.title.includes(searchKeyword));
     

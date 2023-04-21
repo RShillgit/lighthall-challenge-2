@@ -6,12 +6,14 @@ import Login from "./components/login";
 
 const RouteSwitch = () => {
 
+    const serverURL = 'http://localhost:8000' // TODO: Change to deployment server
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<App />}/>
-                <Route path="/login" element={ <Login />}/>
-                <Route path="/register" element={ <Register />}/>
+                <Route path="/" element={<App serverURL={serverURL}/>}/>
+                <Route path="/login" element={ <Login serverURL={serverURL}/>}/>
+                <Route path="/register" element={ <Register serverURL={serverURL}/>}/>
                 <Route path="*" element={<Error />} />
             </Routes>
         </BrowserRouter>
