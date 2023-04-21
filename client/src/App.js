@@ -87,6 +87,7 @@ function App(props) {
             <input
               type="text"
               name="title"
+              required={true}
               onChange={(e) => title.current = (e.target.value)}
             />
           </label>
@@ -99,7 +100,7 @@ function App(props) {
           </label>
           <label>
             Status:
-            <select onChange={(e) => status.current = (e.target.value)}>
+            <select onChange={(e) => status.current = (e.target.value)} required={true}>
               <option value="">Select status</option>
               <option value="Not started">Not started</option>
               <option value="In progress">In progress</option>
@@ -111,6 +112,7 @@ function App(props) {
             <input
               type="date"
               name="dueDate"
+              required={true}
               onChange={(e) => dueDate.current = (e.target.value)}
             />
           </label>
@@ -304,7 +306,7 @@ function App(props) {
         <form id='editTaskForm' onSubmit={editTaskFormSubmit}>
           <label>
             Title:
-            <input type="text" name="title" value={editTitle}
+            <input type="text" name="title" value={editTitle} required={true}
               onChange={(e) => setEditTitle(e.target.value)}
             />
           </label>
@@ -316,7 +318,7 @@ function App(props) {
           </label>
           <label>
             Status:
-            <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+            <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)} required={true}>
               <option value="">Select status</option>
               <option value="Not started">Not started</option>
               <option value="In progress">In progress</option>
@@ -325,7 +327,7 @@ function App(props) {
           </label>
           <label>
             Due Date:
-            <input type="date" name="dueDate" value={editDueDate}
+            <input type="date" name="dueDate" value={editDueDate} required={true}
               onChange={(e) => setEditDueDate(e.target.value)}
             />
           </label>
