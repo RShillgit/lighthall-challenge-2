@@ -6,7 +6,7 @@ import Login from "./components/login";
 
 const RouteSwitch = () => {
 
-    const serverURL = 'https://private-bath-production.up.railway.app/' // Change to http://localhost:8000 in development
+    const serverURL = 'https://private-bath-production.up.railway.app' // Change to http://localhost:8000 in development
 
     return (
         <BrowserRouter>
