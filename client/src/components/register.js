@@ -25,7 +25,7 @@ const Register = (props) => {
         // If creating the new user was successful
         if(data.success) {
             // Navigate to the home page
-            navigate('/login');
+            navigate('/login', {state: {registeredMessage: 'Registered Successfully'}});
         }
       })
       .catch(err => console.log(err))
@@ -35,7 +35,7 @@ const Register = (props) => {
       <div className="App">
         <header className="App-header">
           <h1 className='registerTitle'>Register a new user</h1>
-          
+
           <form className='registerForm' onSubmit={registerFormSubmit}>  
             <div className="registerInfoContainer">
               <input className='registerUser' type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)} required={true}/>

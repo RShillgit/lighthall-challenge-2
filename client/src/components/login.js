@@ -1,13 +1,32 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../App.css"
 
 const Login = (props) => {
 
     const [firstName, setFirstName] = useState();
     const [errorMessage, setErrorMessage] = useState("");
+    const [registeredSuccessfullyMessage, setRegisteredSuccessfullyMessage] = useState("");
+    const {state} = useLocation();
     const navigate = useNavigate();
-  
+
+    // On mount
+    useEffect(() => {
+
+      // If there is a "registered successfully" message
+      if(state && state.registeredMessage) {
+        setRegisteredSuccessfullyMessage(
+          <div className="registeredSuccessfullyMessage">
+            <p>{state.registeredMessage}</p>
+          </div>
+        )
+      }
+
+      // On page refresh, remove registeredMessage from state
+      window.history.replaceState({}, document.title)
+
+    }, [])
+
     const loginFormSubmit = (e) => {
       e.preventDefault();
 
@@ -33,7 +52,11 @@ const Login = (props) => {
         }
         // Else render error message
         else {
-          setErrorMessage(data.error);
+          setErrorMessage(
+            <div className='errorMessage'>
+              {data.error}
+            </div>
+          );
         }
       })
       .catch(err => console.log(err))
@@ -41,18 +64,35 @@ const Login = (props) => {
 
     return (
         <div className='loginContainer'>
+
           <h1 className='title'>Task Tracker</h1>
+
           <form className='loginForm' onSubmit={loginFormSubmit}>
             <input className='userName' type="text" name="first_name" placeholder="Name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
             <button className='login'>Log In</button>
           </form>
+
           <div className='registerContainer'>
             <p className='newUser'>New User: </p>
             <a className='register' href='/register'>Register</a>
           </div>
-            <div className='errorMessage'>
-             {errorMessage}
-            </div>
+
+          {errorMessage}
+
+          {(state && state.registeredMessage)
+            ?
+            <>
+            {(errorMessage)
+              ? <></>
+              :
+              <>
+                {registeredSuccessfullyMessage}
+              </>
+            }
+            </>
+            :<></>
+          }
+
         </div>
     )
 

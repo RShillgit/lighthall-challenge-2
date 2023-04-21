@@ -126,6 +126,14 @@ button:active {
     justify-content: center;
 }
 
+.registeredSuccessfullyMessage {
+    color: white;
+    margin: auto;
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
 /*
 register.js
 */
