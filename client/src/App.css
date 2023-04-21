@@ -433,9 +433,14 @@ error.js
     font-weight: bolder;
   }
 
-  .taskDelete {
+  .taskEdit {
+    color: black;
+    background-color: transparent;
+  }
 
-    background-color: rgb(255, 100, 100);
+  .taskDelete {
+    color: black;
+    background-color: transparent;
 }
 
 .taskDelete:hover {

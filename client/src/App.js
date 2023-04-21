@@ -88,7 +88,6 @@ function App(props) {
                 <input className='newTitleField'
                   type="text"
                   name="title"
-                  required={true}
                   onChange={(e) => title.current = (e.target.value)}
                 />
               </label>
@@ -101,7 +100,7 @@ function App(props) {
               </label>
               <p>Status:</p>
               <label>
-                <select className='newProgress' onChange={(e) => status.current = (e.target.value)} required={true}>
+                <select className='newProgress' onChange={(e) => status.current = (e.target.value)}>
                   <option value="">Select status</option>
                   <option value="Not started">Not started</option>
                   <option value="In progress">In progress</option>
@@ -113,13 +112,11 @@ function App(props) {
                 <input
                   type="date"
                   name="dueDate"
-                  required={true}
                   onChange={(e) => dueDate.current = (e.target.value)}
                 />
               </label>
               <div className='addConfirm'>
-                <button type="submit">Add Task</button>   
-                <button className='addTaskCancel' onClick={cancelAddTask}>Cancel</button>              
+                <button type="submit">Add Task</button>
               </div>
             </form>
         </div>
@@ -132,12 +129,10 @@ function App(props) {
   const addTaskFormSubmit = (e) => {
     e.preventDefault();
 
-    let newDescription = description.current || "none";
-
     const newTaskRequest = {
       currentUser: currentUser,
       title: title.current,
-      description: newDescription,
+      description: description.current,
       status: status.current,
       dueDate: dueDate.current
     }
@@ -150,21 +145,16 @@ function App(props) {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         if (data.success) {
           // set updated current user state
           setCurrentUser(data.updatedUser);
           // Remove add task form
           setAddTaskDisplay();
-          // Clear description field value 
-          description.current = "";
         }
       })
       .catch((err) => console.log(err));
   };
-
-  const cancelAddTask = () => {
-    setAddTaskDisplay();
-  }
 
   // Sets neccessary state variables to display the edit task form
   const editTaskButtonClick = (task) => {
@@ -172,9 +162,8 @@ function App(props) {
     taskBeingEdited.current = task;
 
     // Format the due date string so it can be used as an input value
-    const taskDueDate = new Date(task.due_date.replace(/-/g, '\/').replace(/T.+/, ''));
-
-    let day = taskDueDate.getDate();
+    const taskDueDate = new Date(task.due_date);
+    let day = taskDueDate.getDate() + 1;
     let month = taskDueDate.getMonth() + 1;
     let year = taskDueDate.getFullYear();
 
@@ -202,12 +191,6 @@ function App(props) {
   const editTaskFormSubmit = (e) => {
     e.preventDefault();
 
-    // If description is empty, set it to "none" instead
-    let editDescriptionInput;
-    if (editDescription === "") {
-      editDescriptionInput = "none";
-    } else editDescriptionInput = editDescription;
-
     // Send edited information to the backend
     fetch(`${props.serverURL}/tasks/${taskBeingEdited.current._id}`, {
       method: "PUT",
@@ -216,7 +199,7 @@ function App(props) {
       body: JSON.stringify({
         userId: currentUser._id,
         editTitle,
-        editDescriptionInput,
+        editDescription,
         editStatus,
         editDueDate
       }),
@@ -296,10 +279,10 @@ function App(props) {
   // Formats timestamp into MM/DD/YYYY
   const formatDate = (timestamp) => {
 
-    const taskDate = new Date(timestamp.replace(/-/g, '\/').replace(/T.+/, ''));
+    const taskDate = new Date(timestamp);
 
     // Day
-    let day = taskDate.getDate();
+    let day = taskDate.getDate() + 1;
 
     // Month
     let month = taskDate.getMonth() + 1;
@@ -333,7 +316,7 @@ function App(props) {
             </p>
             <label>
               <input className='addTitleField' type="text" name="title" value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)} required={true}
+                onChange={(e) => setEditTitle(e.target.value)}
               />
             </label>
             <p>
@@ -348,7 +331,7 @@ function App(props) {
             Status:
             </p>
             <label>
-              <select className='currentProgress' value={editStatus} onChange={(e) => setEditStatus(e.target.value)} required={true}>
+              <select className='currentProgress' value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
                 <option value="">Select status</option>
                 <option value="Not started">Not started</option>
                 <option value="In progress">In progress</option>
@@ -359,7 +342,7 @@ function App(props) {
             Due Date:
             </p>
             <label>
-              <input type="date" name="dueDate" value={editDueDate} required={true}
+              <input type="date" name="dueDate" value={editDueDate}
                 onChange={(e) => setEditDueDate(e.target.value)}
               />
             </label>
@@ -383,13 +366,7 @@ function App(props) {
     if (sortField === 'title') {
       filteredTasks = filteredTasks.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortField === 'status') {
-      // define an object to map each status to a numerical value
-    const statusValues = {
-      'Not started': 1,
-      'In progress': 2,
-      'Completed': 3
-    };
-    filteredTasks = filteredTasks.sort((a, b) => statusValues[a.status] - statusValues[b.status]); // sort the tasks based on the numerical value of the status
+      filteredTasks = filteredTasks.sort((a, b) => a.status.localeCompare(b.status));
     } else if (sortField === 'due_date') {
       filteredTasks = filteredTasks.sort((a, b) => new Date(a.due_date) - new Date(b.due_date));
     }
@@ -404,8 +381,8 @@ function App(props) {
         <p className='descriptionField'>Description: {task.description}</p>
       </div>
         <div className='taskOptions'>
-          <button className='taskEdit' onClick={() => editTaskButtonClick(task)}>Edit</button>
-          <button className='taskDelete' onClick={() => deleteTask(task._id)}>Delete</button>
+          <button className='taskEdit' title='Edit' onClick={() => editTaskButtonClick(task)}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+          <button className='taskDelete' title='Delete' onClick={() => deleteTask(task._id)}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
         </div>
       </div>
     ));
