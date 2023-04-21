@@ -142,7 +142,12 @@ register.js
     padding-top: 1em;
     padding-bottom: 1em;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.registerInfoContainer {
+    display: flex;
 }
 
 .registerUser {
@@ -157,6 +162,36 @@ register.js
     padding: 0;
     padding-left: .5em;
     transition: background-color 0.3s;
+}
+
+.loginLinkContainer {
+    display: flex;
+    font-size: .66em;
+    justify-content: center;
+}
+
+.haveAccount {
+    color: white;
+    font-weight: bold;
+}
+
+.loginLink {
+    padding-left:.25em;
+    color: #239227;
+    text-decoration: none;
+}
+
+.loginLink:hover {
+    color: #5eaf60;
+}
+
+.loginLink:active {
+    color: #3e8e41;
+    transform: translateY(2px);
+}
+
+.loginLink:visited {
+    text-decoration: none;
 }
 
 /*

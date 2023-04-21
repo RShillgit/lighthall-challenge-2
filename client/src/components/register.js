@@ -35,10 +35,19 @@ const Register = (props) => {
       <div className="App">
         <header className="App-header">
           <h1 className='registerTitle'>Register a new user</h1>
+          
           <form className='registerForm' onSubmit={registerFormSubmit}>  
-            <input className='registerUser' type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
-            <button>Register</button>
+            <div className="registerInfoContainer">
+              <input className='registerUser' type="text" placeholder="First Name" name="first_name" onChange={(e) => setFirstName(e.target.value)} required={true}/>
+              <button>Register</button>
+            </div>
           </form>
+
+          <div className='loginLinkContainer'>
+            <p className='haveAccount'>Have An Account?</p>
+            <a className='loginLink' href='/login'>Login</a>
+          </div>
+
         </header>
       </div>
     );
