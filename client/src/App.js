@@ -170,8 +170,9 @@ function App(props) {
     taskBeingEdited.current = task;
 
     // Format the due date string so it can be used as an input value
-    const taskDueDate = new Date(task.due_date);
-    let day = taskDueDate.getDate() + 1;
+    const taskDueDate = new Date(task.due_date.replace(/-/g, '\/').replace(/T.+/, ''));
+    
+    let day = taskDueDate.getDate();
     let month = taskDueDate.getMonth() + 1;
     let year = taskDueDate.getFullYear();
 
@@ -287,10 +288,10 @@ function App(props) {
   // Formats timestamp into MM/DD/YYYY
   const formatDate = (timestamp) => {
 
-    const taskDate = new Date(timestamp);
+    const taskDate = new Date(timestamp.replace(/-/g, '\/').replace(/T.+/, ''));
 
     // Day
-    let day = taskDate.getDate() + 1;
+    let day = taskDate.getDate();
 
     // Month
     let month = taskDate.getMonth() + 1;
