@@ -250,12 +250,15 @@ function App() {
 
     setDeleteConfirmationDisplay(
       <div className='deleteContainer'>
-        <p>Are you sure you want to delete</p>
-        <button onClick={() => cancelTaskDelete()}>
-          Cancel
-        </button>
-        <button onClick={() => deleteConfirm(taskId)}>Confirm</button>
+        <div className='deleteConfirmtion'>
+          <p>Are you sure you want to delete</p>
+            <button onClick={() => deleteConfirm(taskId)}>Confirm</button>
+            <button className='cancelButton' onClick={() => cancelTaskDelete()}>
+            Cancel
+          </button>  
+          </div>
       </div>
+        
     )
   }
 
@@ -301,39 +304,42 @@ function App() {
       {(taskBeingEdited.current)
       ?
       <div className='editTaskContainer'>
-        <form id='editTaskForm' onSubmit={editTaskFormSubmit}>
-          <label>
-            Title:
-            <input type="text" name="title" value={editTitle}
-              onChange={(e) => setEditTitle(e.target.value)}
-            />
-          </label>
-          <label>
-            Description:
-            <textarea name="description" value={editDescription}
-              onChange={(e) => setEditDescription(e.target.value)}
-            ></textarea>
-          </label>
-          <label>
-            Status:
-            <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
-              <option value="">Select status</option>
-              <option value="Not started">Not started</option>
-              <option value="In progress">In progress</option>
-              <option value="Completed">Completed</option>
-            </select>
-          </label>
-          <label>
-            Due Date:
-            <input type="date" name="dueDate" value={editDueDate}
-              onChange={(e) => setEditDueDate(e.target.value)}
-            />
-          </label>
-        </form>
-        <div className='editTaskForm-buttons'>
-          <button onClick={cancelEditTask}>Cancel</button>
-          <button form='editTaskForm'>Submit</button>
+        <div className='inputContainer'>
+          <form id='editTaskForm' onSubmit={editTaskFormSubmit}>
+            <label>
+              Title:
+              <input type="text" name="title" value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+              />
+            </label>
+            <label>
+              Description:
+              <textarea name="description" value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+              ></textarea>
+            </label>
+            <label>
+              Status:
+              <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+                <option value="">Select status</option>
+                <option value="Not started">Not started</option>
+                <option value="In progress">In progress</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </label>
+            <label>
+              Due Date:
+              <input type="date" name="dueDate" value={editDueDate}
+                onChange={(e) => setEditDueDate(e.target.value)}
+              />
+            </label>
+          </form>
+          <div className='editTaskForm-buttons'>        
+            <button form='editTaskForm'>Submit</button>
+            <button onClick={cancelEditTask}>Cancel</button>  
+          </div>
         </div>
+        
       </div>
       :
       <></>
@@ -358,8 +364,8 @@ function App() {
         <p>{task.description}</p>
         <p>Status: {task.status}</p>
         <p>Due Date: {formatDate(task.due_date)}</p>
-        <button onClick={() => deleteTask(task._id)}>Delete</button>
         <button onClick={() => editTaskButtonClick(task)}>Edit</button>
+        <button onClick={() => deleteTask(task._id)}>Delete</button>
       </div>
     ));
   };
@@ -369,30 +375,35 @@ function App() {
       {currentUser
         ?
         <div className="App">
-          <h1>Home</h1>
+        <div className='logoutButtonContainer'>
+          <button className='logoutButton' onClick={logUserOut}>Logout</button>
+        </div>
+        <div className='displayTasksContainer'>
+          <h1 className='taskTitle'>Your Tasks</h1>
           <div className="searchAndSort">
-            <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
             <select value={sortField} onChange={e => setSortField(e.target.value)}>
               <option value="">Sort by</option>
               <option value="title">Title</option>
               <option value="status">Status</option>
               <option value="due_date">Due date</option>
             </select>
+            <input type="text" value={searchKeyword} onChange={e => setSearchKeyword(e.target.value)} placeholder="Search by title" />
+            <button onClick={addTaskButtonClick}>Add Task</button>
+            </div>
+            {currentUser && currentUser.tasks.length > 0 ? (
+              <div className="allTasks">
+                {sortAndFilterTasks()}
+              </div>
+            ) : (
+              <div className="noTasks">
+                <p>The task list is empty.</p>
+              </div>
+            )}
+            {addTaskDisplay}
+            {editTaskDisplay}
+            {deleteConfirmationDisplay}
           </div>
-          {currentUser && currentUser.tasks.length > 0 ? (
-            <div className="allTasks">
-              {sortAndFilterTasks()}
-            </div>
-          ) : (
-            <div className="noTasks">
-              <p>The task list is empty.</p>
-            </div>
-          )}
-          {addTaskDisplay}
-          {editTaskDisplay}
-          {deleteConfirmationDisplay}
-          <button onClick={logUserOut}>Logout</button>
-          <button onClick={addTaskButtonClick}>Add Task</button>
+        
         </div>
         :
         <></>
