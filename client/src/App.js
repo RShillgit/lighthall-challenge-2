@@ -155,6 +155,8 @@ function App(props) {
           setCurrentUser(data.updatedUser);
           // Remove add task form
           setAddTaskDisplay();
+          // Clear description field value 
+          description.current = "";
         }
       })
       .catch((err) => console.log(err));
@@ -171,7 +173,7 @@ function App(props) {
 
     // Format the due date string so it can be used as an input value
     const taskDueDate = new Date(task.due_date.replace(/-/g, '\/').replace(/T.+/, ''));
-    
+
     let day = taskDueDate.getDate();
     let month = taskDueDate.getMonth() + 1;
     let year = taskDueDate.getFullYear();
@@ -200,6 +202,12 @@ function App(props) {
   const editTaskFormSubmit = (e) => {
     e.preventDefault();
 
+    // If description is empty, set it to "none" instead
+    let editDescriptionInput;
+    if (editDescription === "") {
+      editDescriptionInput = "none";
+    } else editDescriptionInput = editDescription;
+
     // Send edited information to the backend
     fetch(`${props.serverURL}/tasks/${taskBeingEdited.current._id}`, {
       method: "PUT",
@@ -208,7 +216,7 @@ function App(props) {
       body: JSON.stringify({
         userId: currentUser._id,
         editTitle,
-        editDescription,
+        editDescriptionInput,
         editStatus,
         editDueDate
       }),

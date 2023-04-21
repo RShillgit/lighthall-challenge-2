@@ -93,7 +93,7 @@ router.put('/:taskId', (req, res, next) => {
   Task.findByIdAndUpdate(req.params.taskId,
     {
       title: req.body.editTitle,
-      description: req.body.editDescription,
+      description: req.body.editDescriptionInput,
       status: req.body.editStatus,
       due_date: req.body.editDueDate
     }
