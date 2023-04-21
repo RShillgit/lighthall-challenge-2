@@ -6,9 +6,19 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     letter-spacing: .1em;
     background-color: #2c3338;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: .75em;
+}
+
+p {
+    font-weight: normal;
+    font-size: .5em;
 }
 
 button {
@@ -255,10 +265,30 @@ error.js
 }
 
 .allTasks {
+    padding: 25px;
+    width: 50%;
+    background-color: white;
+    color: black;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    border: 1px solid red;
+    border-radius: 10px;
+
+.individualTasks {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 4px;
+    border-bottom: 1px solid black;
+}
+
+.taskStatus {
+    font-size: .5em;
+    font-weight: bolder;
+    text-align: center;
+    border: 1px solid #2c3338;
+    border-radius: 10%;
+    padding: 2.5px;
+}
+
 }
 .allTasks .individualTask {
     display: flex;
@@ -296,7 +326,6 @@ error.js
 }
 
 .inputContainer {
-    background-color: red;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -311,11 +340,35 @@ error.js
     left: 50%;
     color: white;
     transform: translate(-50%,-50%);
-    display: flex;
-    flex-direction: column;
+    width: 40%;
     padding: 1rem;
     gap: 1rem;
 }
+
+.editTaskContainer form p {
+    padding-top: 8px;
+}
+
+.addTitleField {
+    height: 25px;
+    width: 100%;
+}
+
+.addDescriptionField {
+    height: 100px;
+    width: 100%;
+}
+
+.currentProgress {
+    height: 25px;
+    width: 100%;
+}
+
+.editConfirm {
+    padding-top: 8px;
+    text-align: center;
+}
+
 .editTaskContainer .editTaskForm-buttons {
     position: absolute;
     top: 75%;
@@ -324,6 +377,21 @@ error.js
     flex-direction: column;
     gap: 0.5rem;
     padding-bottom: 1rem;
+}
+
+.editTaskCancel {
+    background-color: rgb(255, 100, 100);
+}
+
+.editTaskCancel:hover {
+    cursor: pointer;
+    background-color: red; /* Green */
+    color: white;
+}
+
+.editTaskCancel:active {
+    background-color: rgb(200, 0, 0);
+    transform: translateY(2px);
 }
 
 .deleteContainer {
@@ -352,6 +420,26 @@ error.js
     gap: 1rem;
   }
 
+  .deleteConfirmtion p{
+    font-weight: bolder;
+  }
+
+  .taskDelete {
+
+    background-color: rgb(255, 100, 100);
+}
+
+.taskDelete:hover {
+    cursor: pointer;
+    background-color: red; /* Green */
+    color: white;
+}
+
+.taskDelete:active {
+    background-color: rgb(200, 0, 0);
+    transform: translateY(2px);
+}
+
   .cancelButton {
     background-color: rgb(255, 100, 100);
   }
@@ -377,7 +465,7 @@ error.js
     bottom: 0;
     background-color: rgba(0,0,0,0.5); /* Black background with opacity */
     z-index: 2;
-  }
+}
 
   .newTaskWindow {
     background-color :#2c3338;
@@ -392,3 +480,22 @@ error.js
     padding: 1rem;
     gap: 1rem;
   }
+
+  .taskOptions {
+    display: flex;
+    align-items: center;
+  }
+  
+  .descriptionField {
+    padding-top: 8px;
+    padding-bottom: 4px;
+  }
+  
+  .statusContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  
+.dueDate {
+    padding-top: 4px;
+}

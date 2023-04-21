@@ -309,36 +309,46 @@ function App(props) {
       <div className='editTaskContainer'>
         <div className='inputContainer'>
           <form id='editTaskForm' onSubmit={editTaskFormSubmit}>
+            <p>
+            Title:
+            </p>
             <label>
-              Title:
-              <input type="text" name="title" value={editTitle}
+              <input className='addTitleField' type="text" name="title" value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
               />
             </label>
+            <p>
+            Description:
+            </p>
             <label>
-              Description:
-              <textarea name="description" value={editDescription}
+              <textarea className='addDescriptionField' name="description" value={editDescription}
                 onChange={(e) => setEditDescription(e.target.value)}
               ></textarea>
             </label>
+            <p>
+            Status:
+            </p>
             <label>
-              Status:
-              <select value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
+              <select className='currentProgress' value={editStatus} onChange={(e) => setEditStatus(e.target.value)}>
                 <option value="">Select status</option>
                 <option value="Not started">Not started</option>
                 <option value="In progress">In progress</option>
                 <option value="Completed">Completed</option>
               </select>
             </label>
+            <p>
+            Due Date:
+            </p>
             <label>
-              Due Date:
               <input type="date" name="dueDate" value={editDueDate}
                 onChange={(e) => setEditDueDate(e.target.value)}
               />
             </label>
-            <button form='editTaskForm'>Submit</button>
-            <button onClick={cancelEditTask}>Cancel</button> 
-            </form>
+            <div className='editConfirm'>
+              <button form='editTaskForm'>Submit</button>
+              <button className='editTaskCancel' onClick={cancelEditTask}>Cancel</button> 
+            </div>
+          </form>
         </div>
       </div>
       :
@@ -361,12 +371,17 @@ function App(props) {
     
     return filteredTasks.map(task => (
       <div className="individualTasks" key={task._id}>
-        <h3>{task.title}</h3>
-        <p>{task.description}</p>
-        <p>Status: {task.status}</p>
-        <p>Due Date: {formatDate(task.due_date)}</p>
-        <button onClick={() => editTaskButtonClick(task)}>Edit</button>
-        <button onClick={() => deleteTask(task._id)}>Delete</button>
+      <div className='statusContainer'>
+        <p className='dueDate'>Due Date: {formatDate(task.due_date)}</p>
+        <div className='currentStatus'>
+          <h3>{task.title}  <span className="taskStatus">{task.status}</span></h3>
+        </div>
+        <p className='descriptionField'>Description: {task.description}</p>
+      </div>
+        <div className='taskOptions'>
+          <button className='taskEdit' onClick={() => editTaskButtonClick(task)}>Edit</button>
+          <button className='taskDelete' onClick={() => deleteTask(task._id)}>Delete</button>
+        </div>
       </div>
     ));
   };
@@ -380,7 +395,7 @@ function App(props) {
             <button className='logoutButton' onClick={logUserOut}>Logout</button>
           </div>
           <div className='displayTasksContainer'>
-            <h1 className='taskTitle'>Your Tasks</h1>
+            <h1 className='taskTitle'>Task List</h1>
             <div className="searchAndSort">
               <select value={sortField} onChange={e => setSortField(e.target.value)}>
                 <option value="">Sort by</option>
