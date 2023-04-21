@@ -6,7 +6,7 @@ import Login from "./components/login";
 
 const RouteSwitch = () => {
 
-    const serverURL = 'http://localhost:8000' // TODO: Change to deployment server
+    const serverURL = 'https://private-bath-production.up.railway.app/' // Change to http://localhost:8000 in development
 
     return (
         <BrowserRouter>
