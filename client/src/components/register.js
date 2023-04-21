@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css"
 
-const Register = () => {
+const Register = (props) => {
 
     const [firstName, setFirstName] = useState("");
     const navigate = useNavigate();
@@ -11,10 +11,9 @@ const Register = () => {
       e.preventDefault();
 
       const lowerCaseName = firstName.toLowerCase();
-      console.log(lowerCaseName)
   
       // Post request which creates a new user
-      fetch('http://localhost:8000/users', {
+      fetch(`${props.serverURL}/users`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         mode: 'cors',

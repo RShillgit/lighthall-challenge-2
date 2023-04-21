@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css"
 
-const Login = () => {
+const Login = (props) => {
 
     const [firstName, setFirstName] = useState();
     const [errorMessage, setErrorMessage] = useState("");
@@ -15,7 +15,7 @@ const Login = () => {
       const lowerCaseName = firstName.toLowerCase();
   
       // POST request to login route ot check if user exists
-      fetch('http://localhost:8000/login', {
+      fetch(`${props.serverURL}/login`, {
         method: 'POST',
         headers: { "Content-Type": "application/json" },
         mode: 'cors',
