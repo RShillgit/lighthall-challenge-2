@@ -418,7 +418,7 @@ function App(props) {
         ?
         <div className="App">
           <div className='logoutButtonContainer'>
-            <button className='logoutButton' onClick={logUserOut}>Logout</button>
+            <button className='logoutButton' onClick={logUserOut}><i className="fa fa-power-off" aria-hidden="true"></i> Logout</button>
           </div>
           <div className='displayTasksContainer'>
             <h1 className='taskTitle'>Task List</h1>
